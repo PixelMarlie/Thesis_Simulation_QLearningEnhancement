@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendation Result</title>
+</head>
+<body>
+    <h1>Recommendation Result</h1>
+    <p>Current User Preference: {{ user_preference }}</p>
+    <p>Recommended Content (Action): {{ action }}</p>
+    <p>Reward: {{ reward }}</p>
+    <p>Total Reward Over Episodes: {{ episode_rewards|sum }}</p>
+    <a href="{{ url_for('recommend') }}">Next Recommendation</a> |
+    <a href="{{ url_for('home') }}">Back to Q-Table</a>
+</body>
+</html>
