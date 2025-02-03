@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 import torch
 import numpy as np
+import seaborn as sns
 
 # Training setup
 num_actions = 5  # The agent recommends up to 5 topics
@@ -10,8 +11,9 @@ env = SocialLearningEnv(num_actions=num_actions)
 agent = QLearningAgent(input_dim=env.num_features, num_actions=num_actions)
 
 # Training parameters
-num_episodes = 10
+num_episodes = 100
 rewards = []
+dynamic_rewards = []  # Store dynamic reward satisfaction values
 start_time = time.time()
 
 for episode in range(num_episodes):
@@ -28,6 +30,7 @@ for episode in range(num_episodes):
         state = next_state
         total_reward += reward
         step_count += 1
+        dynamic_rewards.append(reward)  # Store dynamic reward values
 
         if step_count >= 1000:  # Prevent infinite loops
             done = True
@@ -68,3 +71,13 @@ plt.ylabel('Q-values')
 plt.title('Learned Q-Values for Sampled States')
 plt.legend()
 plt.savefig('q_values_plot.png')
+
+# Histogram of Dynamic Reward Satisfaction
+plt.figure(figsize=(10, 6))
+sns.histplot(dynamic_rewards, color="blue", label="Dynamic Reward Satisfaction", kde=True, bins=20, alpha=0.6)
+plt.xlabel("Reward Values")
+plt.ylabel("Frequency")
+plt.title("Histogram of Dynamic Reward Satisfaction in Enhanced Q-Learning")
+plt.legend()
+plt.savefig('dynamic_reward_satisfaction.png')
+plt.show()

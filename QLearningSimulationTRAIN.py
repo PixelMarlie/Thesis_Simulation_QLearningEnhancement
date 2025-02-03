@@ -2,6 +2,7 @@ from QLearningSimulationENV import SocialLearningEnv, QLearningAgent
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Training setup
 num_actions = 5  # Application will recommend up to 5 topics
@@ -10,7 +11,7 @@ env = SocialLearningEnv(num_actions, num_preferences)
 agent = QLearningAgent(num_preferences=num_preferences, action_space=num_actions)
 
 # Training parameters
-num_episodes = 10  # Reduce for quicker comparison
+num_episodes = 100  # Reduce for quicker comparison
 rewards = []
 start_time = time.time()
 
@@ -72,3 +73,21 @@ plt.title('Unenhanced Q-Learning: Learned Q-Values for Sampled States')
 plt.legend()
 plt.savefig('unenhanced_q_values_plot.png')  # Save plot as PNG
 plt.show()
+
+# Assuming 'rewards' contains per-episode rewards, and 'q_values' stores Q-values
+num_bins = 10  # Define bins for heatmap visualization
+
+def plot_reward_distribution(rewards):
+    plt.figure(figsize=(10, 6))
+    sns.histplot(rewards, bins=num_bins, kde=True, color='purple')
+    plt.xlabel('Reward Values')
+    plt.ylabel('Frequency')
+    plt.title('Reward Distribution: Impact of Binary Satisfaction')
+    plt.savefig('binary_reward_satisfaction.png')  # Save plot as PNG
+    plt.show()
+
+
+
+
+# Assuming q_values is a NumPy array storing sampled Q-values across states
+plot_reward_distribution(rewards)
