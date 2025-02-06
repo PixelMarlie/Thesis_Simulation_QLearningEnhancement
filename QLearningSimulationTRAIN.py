@@ -11,15 +11,19 @@ env = SocialLearningEnv(num_actions, num_preferences)
 agent = QLearningAgent(num_preferences=num_preferences, action_space=num_actions)
 
 # Training parameters
-num_episodes = 100  # Reduce for quicker comparison
+num_episodes = 1000  # Reduce for quicker comparison
 rewards = []
 start_time = time.time()
+
+# For visualizing table sparsity
+q_table = agent.get_q_table()
 
 for episode in range(num_episodes):
     state = env.reset()
     done = False
     total_reward = 0
     step_count = 0
+    states_in_episode = set()
 
     while not done:
         action = agent.choose_action(state)
@@ -27,7 +31,6 @@ for episode in range(num_episodes):
 
         # Learn and update Q-table
         agent.learn(state, action, reward, next_state)
-
         state = next_state
         total_reward += reward
         step_count += 1
@@ -42,6 +45,15 @@ for episode in range(num_episodes):
 # Training complete
 end_time = time.time()
 print(f"Training completed in {end_time - start_time:.2f} seconds")
+
+# Q-Learning: dense state-action with no meaningful learning
+plt.figure(figsize=(12, 6))
+sns.heatmap(q_table, cmap='coolwarm', annot=False)
+plt.xlabel('Actions')
+plt.ylabel('States')
+plt.title('Q-Table Heatmap: State-Action Values')
+plt.savefig('q_table_heatmap.png')  # Save plot
+plt.show()
 
 # Reward trend visualization
 plt.figure(figsize=(10, 6))
