@@ -93,12 +93,17 @@ class QLearningAgent:
         next_state_tensor = torch.tensor(next_state, dtype=torch.float32).unsqueeze(0)
         reward_tensor = torch.tensor(reward, dtype=torch.float32)
 
+        # Forward pass to get Q-values
         q_values = self.q_network(state_tensor)
         next_q_values = self.q_network(next_state_tensor)
+
+        # Compute the target Q-value
         target = reward_tensor + self.gamma * torch.max(next_q_values).item()
 
         # Compute loss and update the network
         loss = self.loss_fn(q_values[0, action], target)
+
+        # Backpropagation
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()

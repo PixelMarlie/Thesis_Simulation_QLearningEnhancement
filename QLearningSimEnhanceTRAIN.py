@@ -11,7 +11,7 @@ env = SocialLearningEnv(num_actions=num_actions)
 agent = QLearningAgent(input_dim=env.num_features, num_actions=num_actions)
 
 # Training parameters
-num_episodes = 100
+num_episodes = 1000
 rewards = []
 dynamic_rewards = []  # Store dynamic reward satisfaction values
 start_time = time.time()
@@ -71,6 +71,17 @@ plt.ylabel('Q-values')
 plt.title('Learned Q-Values for Sampled States')
 plt.legend()
 plt.savefig('q_values_plot.png')
+
+# (SOP1 - TABLE 1 STABILITY COMPARISON OF STATE REPRESENTATIONS)
+mean_q_value = np.mean(q_values) # Mean Q-value
+std_dev_q = np.std(q_values) # Standard Deviation
+variance_q = np.var(q_values) # Variance
+range_q = np.max(q_values) - np.min(q_values) # Range (Max - Min Q-Value)
+# Print results for each metric
+print(f"Mean Q-value: {mean_q_value}")
+print(f"Standard Deviation: {std_dev_q}")
+print(f"Variance: {variance_q}")
+print(f"Range (Max - Min Q-Value): {range_q}")
 
 # Histogram of Dynamic Reward Satisfaction
 plt.figure(figsize=(10, 6))
